@@ -59,22 +59,32 @@ def playermoves(player_hand, computer_hand, tablecard, deck):
      
         tablecard.append(play)
         player_hand.remove(play)
-        if play[0] == "Ace":
+        if play[0] == "A":
             newsuit = input("Enter the new card suit: ").capitalize().strip()
             tablecard[-1] = (tablecard[-1][0], newsuit)
             print(f"The game was changed to {newsuit}")
 
         if play[0] in ["2"]:
-            for i in range(2):
-                computer_hand.append(deck[i])
-                print("Cards added",deck[i])
-                print("Penalty!", len(computer_hand))
+                for i in range(2):
+                    if deck:
+                        computer_hand.append(deck.pop())
+                        print("Cards added",deck[i])
+                        print("Penalty!", len(computer_hand))
                 
         if play[0] in ["3"]:
-            for i in range(3):
-                computer_hand.append(deck[i])
-                print("Cards added",deck[i])
-                print("Penalty!", len(computer_hand))    
+                for i in range(3):
+                    if deck:
+                        computer_hand.append(deck.pop())
+                    print("Cards added",deck[i])
+                    print("Penalty!", len(computer_hand))    
+        
+        if play[0] =="k" or play[0] == 'J':
+            playermoves(player_hand, computer_hand, tablecard, deck)
+            computer_turn(player_hand, computer_hand, tablecard, deck)
+
+        if play[0] == "8" or play[0] == "Q":
+            playermoves(player_hand, computer_hand, tablecard, deck)
+
 
 
             
