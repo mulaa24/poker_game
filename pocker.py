@@ -34,8 +34,8 @@ def main():
 
     # Place one card from the deck face up on the table
     tablecard = [deck.pop()]
+    
 
-    print("deck", deck)
 
     while True:
         try:
@@ -98,33 +98,39 @@ def playermoves(player_hand, computer_hand, tablecard, deck):
 
 def computer_turn(player_hand, computer_hand, tablecard, deck):
         
-   
-    play = random.choice(computer_hand)
-
-
-        # Check if the card matches the top card on the table
-    if play in computer_hand and (play[0]==tablecard[-1][0] or play[1]==tablecard[-1][1]):
-        tablecard.append(play)
-        computer_hand.remove(play)
-
-        if play[0] in ["2"]:
-            for i in range(2):
-                if deck:
-                    player_hand.append(deck.pop())
-                print("Cards added",deck[i])
-                print("Penalty!", len(computer_hand))
-                
-        if play[0] in ["3"]:
-            for i in range(3):
-                if deck:
-                    player_hand.append(deck.pop)
-                print("Cards added",deck[i])
-                print("Penalty!", len(computer_hand))    
+    playable_cards = [card for card in computer_hand if card[0] == tablecard[-1][0] or card[1] == tablecard[-1][1]]
+    if playable_cards:
+        play = random.choice(playable_cards)
 
     else:
-        computer_hand.append(deck.pop())
-        print("Computer picked a card!")
- 
+        if deck:
+            computer_hand.append(deck.pop())
+            print("Computer picked a card!")
+        return
+
+    tablecard.append(play)
+    computer_hand.remove(play)
+
+    if play[0] in ["2"]:
+        for i in range(2):
+            if deck:
+                player_hand.append(deck.pop())
+            print("Cards added",deck[i])
+            print("Penalty!", len(computer_hand))
+                
+    if play[0] in ["3"]:
+        for i in range(3):
+            if deck:
+                player_hand.append(deck.pop())
+            print("Cards added",deck[i])
+            print("Penalty!", len(computer_hand))    
+    
+    if play[0] =="k" or play[0] == 'J':
+            computer_turn(player_hand, computer_hand, tablecard, deck)
+            playermoves(player_hand, computer_hand, tablecard, deck)
+
+    if play[0] == "8" or play[0] == "Q":
+            computer_turn(player_hand, computer_hand, tablecard, deck)
 
     if not computer_hand:
         print("The computer has no cards left. You win!")
