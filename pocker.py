@@ -7,6 +7,7 @@ suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 new_ranks= ['4', '5', '6', '7', '8', '9', '10']
 new_suits= ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 
+joker = [('joker', 'joker')]
 
 # Function to create and shuffle a deck of cards
 def create_deck():
@@ -26,6 +27,7 @@ def display_cards(cards, player_name):
 def main():
     # Create and shuffle the deck
     deck = create_deck()
+    deck.append(joker)
     random.shuffle(deck)
 
     # Deal cards to players
@@ -34,6 +36,7 @@ def main():
 
     # Place one card from the deck face up on the table
     tablecard = [deck.pop()]
+    print(deck)
     
 
 
@@ -65,18 +68,20 @@ def playermoves(player_hand, computer_hand, tablecard, deck):
             print(f"The game was changed to {newsuit}")
 
         if play[0] in ["2"]:
-                for i in range(2):
+                for _ in range(2):
                     if deck:
                         computer_hand.append(deck.pop())
-                        print("Cards added",deck[i])
-                        print("Penalty!", len(computer_hand))
+                    print("Penalty!")
+                    print("Cards added")
+                        
                 
         if play[0] in ["3"]:
-                for i in range(3):
+                for _ in range(3):
                     if deck:
                         computer_hand.append(deck.pop())
-                    print("Cards added",deck[i])
-                    print("Penalty!", len(computer_hand))    
+                    print("Penalty!") 
+                    print("Cards added")
+                       
         
         if play[0] =="k" or play[0] == 'J':
             playermoves(player_hand, computer_hand, tablecard, deck)
@@ -84,6 +89,11 @@ def playermoves(player_hand, computer_hand, tablecard, deck):
 
         if play[0] == "8" or play[0] == "Q":
             playermoves(player_hand, computer_hand, tablecard, deck)
+
+        
+        if play[0] == "Joker" or play[1] == "Joker":
+            for _ in range(5):
+                computer_hand.append(deck.pop())
 
 
 
@@ -112,18 +122,20 @@ def computer_turn(player_hand, computer_hand, tablecard, deck):
     computer_hand.remove(play)
 
     if play[0] in ["2"]:
-        for i in range(2):
+        for _ in range(2):
             if deck:
                 player_hand.append(deck.pop())
-            print("Cards added",deck[i])
-            print("Penalty!", len(computer_hand))
+            print("Penalty!")
+            print("Cards added")
+           
                 
     if play[0] in ["3"]:
-        for i in range(3):
+        for _ in range(3):
             if deck:
                 player_hand.append(deck.pop())
-            print("Cards added",deck[i])
-            print("Penalty!", len(computer_hand))    
+            print("Penalty!")
+            print("Cards added")
+                
     
     if play[0] =="k" or play[0] == 'J':
             computer_turn(player_hand, computer_hand, tablecard, deck)
@@ -132,9 +144,10 @@ def computer_turn(player_hand, computer_hand, tablecard, deck):
     if play[0] == "8" or play[0] == "Q":
             computer_turn(player_hand, computer_hand, tablecard, deck)
 
-    if not computer_hand:
-        print("The computer has no cards left. You win!")
-        return
+    if play[0] == "Joker" or play[1] == "Joker":
+            for _ in range(5):
+                computer_hand.append(deck.pop())
+
 
  
     print(f"Computer's hand: {computer_hand}")
